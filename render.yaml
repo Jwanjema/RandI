@@ -1,0 +1,43 @@
+services:
+  # Django Backend Service
+  - type: web
+    name: rental-backend
+    runtime: python
+    buildCommand: "./build.sh"
+    startCommand: "gunicorn rental_system.wsgi:application"
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.11.9
+      - key: DATABASE_URL
+        fromDatabase:
+          name: rental-db
+          property: connectionString
+      - key: SECRET_KEY
+        generateValue: true
+      - key: DEBUG
+        value: False
+      - key: ALLOWED_HOSTS
+        sync: false
+      - key: DJANGO_SETTINGS_MODULE
+        value: rental_system.settings
+      - key: WEB_CONCURRENCY
+        value: 4
+
+  # React Frontend Service
+  - type: web
+    name: rental-frontend
+    runtime: static
+    buildCommand: cd frontend && npm install && npm run build
+    staticPublishPath: ./frontend/build
+    envVars:
+      - key: NODE_VERSION
+        value: 18.17.0
+      - key: REACT_APP_API_URL
+        value: https://rental-backend.onrender.com
+
+# PostgreSQL Database
+databases:
+  - name: rental-db
+    databaseName: rental_db
+    user: rental_user
+    plan: free
