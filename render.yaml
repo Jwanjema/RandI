@@ -3,8 +3,8 @@ services:
   - type: web
     name: rental-backend
     runtime: python
-    buildCommand: "./build.sh"
-    startCommand: "gunicorn rental_system.wsgi:application"
+    buildCommand: './build.sh'
+    startCommand: 'gunicorn rental_system.wsgi:application'
     envVars:
       - key: PYTHON_VERSION
         value: 3.11.9

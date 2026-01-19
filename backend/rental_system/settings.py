@@ -11,12 +11,14 @@ import dj_database_url
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = config('SECRET_KEY', default='django-insecure-change-this-in-production-xyz123')
+SECRET_KEY = config(
+    'SECRET_KEY', default='django-insecure-change-this-in-production-xyz123')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = config('DEBUG', default=True, cast=bool)
 
-ALLOWED_HOSTS = config('ALLOWED_HOSTS', default='localhost,127.0.0.1', cast=lambda v: [s.strip() for s in v.split(',')])
+ALLOWED_HOSTS = config('ALLOWED_HOSTS', default='localhost,127.0.0.1',
+                       cast=lambda v: [s.strip() for s in v.split(',')])
 
 
 # Application definition
@@ -163,7 +165,9 @@ CORS_ALLOWED_ORIGINS_DEFAULT = [
 
 CORS_ALLOWED_ORIGINS_CONFIG = config('CORS_ALLOWED_ORIGINS', default='')
 if CORS_ALLOWED_ORIGINS_CONFIG:
-    CORS_ALLOWED_ORIGINS = CORS_ALLOWED_ORIGINS_DEFAULT + [origin.strip() for origin in CORS_ALLOWED_ORIGINS_CONFIG.split(',') if origin.strip()]
+    CORS_ALLOWED_ORIGINS = CORS_ALLOWED_ORIGINS_DEFAULT + \
+        [origin.strip()
+         for origin in CORS_ALLOWED_ORIGINS_CONFIG.split(',') if origin.strip()]
 else:
     CORS_ALLOWED_ORIGINS = CORS_ALLOWED_ORIGINS_DEFAULT
 
@@ -179,7 +183,9 @@ CSRF_TRUSTED_ORIGINS_DEFAULT = [
 
 CSRF_TRUSTED_ORIGINS_CONFIG = config('CSRF_TRUSTED_ORIGINS', default='')
 if CSRF_TRUSTED_ORIGINS_CONFIG:
-    CSRF_TRUSTED_ORIGINS = CSRF_TRUSTED_ORIGINS_DEFAULT + [origin.strip() for origin in CSRF_TRUSTED_ORIGINS_CONFIG.split(',') if origin.strip()]
+    CSRF_TRUSTED_ORIGINS = CSRF_TRUSTED_ORIGINS_DEFAULT + \
+        [origin.strip()
+         for origin in CSRF_TRUSTED_ORIGINS_CONFIG.split(',') if origin.strip()]
 else:
     CSRF_TRUSTED_ORIGINS = CSRF_TRUSTED_ORIGINS_DEFAULT
 
