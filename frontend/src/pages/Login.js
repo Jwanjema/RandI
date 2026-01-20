@@ -18,7 +18,8 @@ function Login() {
 
   // Fetch CSRF token on mount
   useEffect(() => {
-    axios.get('http://localhost:8000/api/auth/csrf/', {
+    const apiUrl = process.env.REACT_APP_API_URL || 'http://localhost:8000/api';
+    axios.get(`${apiUrl}/auth/csrf/`, {
       withCredentials: true
     }).catch(err => console.log('CSRF fetch failed:', err));
   }, []);
@@ -51,7 +52,8 @@ function Login() {
     setLoading(true);
 
     try {
-      const endpoint = isSignup ? '/api/auth/signup/' : '/api/auth/login/';
+      const apiUrl = process.env.REACT_APP_API_URL || 'http://localhost:8000/api';
+      const endpoint = isSignup ? '/auth/signup/' : '/auth/login/';
       
       // Get CSRF token
       const csrfToken = getCookie('csrftoken');
@@ -62,7 +64,7 @@ function Login() {
         headers['X-CSRFToken'] = csrfToken;
       }
 
-      const response = await axios.post(`http://localhost:8000${endpoint}`, formData, {
+      const response = await axios.post(`${apiUrl}${endpoint}`, formData, {
         withCredentials: true,
         headers: headers
       });

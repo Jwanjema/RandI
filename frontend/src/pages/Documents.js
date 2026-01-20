@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { documentsAPI, buildingsAPI, unitsAPI, tenantsAPI } from '../services/api';
+import { API_URL } from '../config';
 
 function Documents() {
   const [documents, setDocuments] = useState([]);
@@ -218,7 +219,7 @@ function Documents() {
 
               {doc.file && (
                 <a 
-                  href={`http://localhost:8000${doc.file}`} 
+                  href={`${API_URL.replace('/api', '')}${doc.file}`} 
                   target="_blank" 
                   rel="noopener noreferrer"
                   className="btn btn-primary"

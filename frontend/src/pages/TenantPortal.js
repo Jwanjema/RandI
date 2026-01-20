@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useToast } from '../components/Toast';
 import axios from 'axios';
+import { API_URL } from '../config';
 
 function TenantPortal() {
   const navigate = useNavigate();
@@ -34,7 +35,7 @@ function TenantPortal() {
 
   const fetchPayments = async (tenantId) => {
     try {
-      const response = await axios.get(`http://localhost:8000/api/payments/?tenant=${tenantId}`, {
+      const response = await axios.get(`${API_URL}/payments/?tenant=${tenantId}`, {
         withCredentials: true
       });
       const data = response.data.results || response.data;
@@ -51,7 +52,7 @@ function TenantPortal() {
 
     try {
       toast.info('Generating statement...');
-      const response = await fetch(`http://localhost:8000/api/tenants/${tenantInfo.id}/statement_pdf/`, {
+      const response = await fetch(`${API_URL}/tenants/${tenantInfo.id}/statement_pdf/`, {
         method: 'GET',
         headers: {
           'Accept': 'application/pdf',
@@ -81,7 +82,7 @@ function TenantPortal() {
 
   const handleLogout = async () => {
     try {
-      await axios.post('http://localhost:8000/api/auth/logout/', {}, {
+      await axios.post(`${API_URL}/auth/logout/`, {}, {
         withCredentials: true
       });
     } catch (error) {

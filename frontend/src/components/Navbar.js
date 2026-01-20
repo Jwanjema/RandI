@@ -2,6 +2,7 @@ import React, { useContext, useEffect, useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { ThemeContext } from '../App';
 import axios from 'axios';
+import { API_URL } from '../config';
 
 function Navbar() {
   const { sidebarOpen, toggleSidebar } = useContext(ThemeContext);
@@ -18,7 +19,7 @@ function Navbar() {
 
   const handleLogout = async () => {
     try {
-      await axios.post('http://localhost:8000/api/auth/logout/', {}, {
+      await axios.post(`${API_URL}/auth/logout/`, {}, {
         withCredentials: true
       });
       localStorage.removeItem('user');

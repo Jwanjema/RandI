@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { photosAPI, buildingsAPI, unitsAPI } from '../services/api';
+import { API_URL } from '../config';
+import { API_URL } from '../config';
 
 function Gallery() {
   const [photos, setPhotos] = useState([]);
@@ -171,7 +173,7 @@ function Gallery() {
               >
                 <div style={{ position: 'relative', paddingBottom: '75%', backgroundColor: '#f0f0f0' }}>
                   <img 
-                    src={`http://localhost:8000${photo.photo}`}
+                    src={`${API_URL.replace('/api', '')}${photo.photo}`}
                     alt={photo.caption || 'Property photo'}
                     style={{
                       position: 'absolute',
@@ -247,7 +249,7 @@ function Gallery() {
             onClick={(e) => e.stopPropagation()}
           >
             <img 
-              src={`http://localhost:8000${selectedPhoto.photo}`}
+              src={`${API_URL.replace('/api', '')}${selectedPhoto.photo}`}
               alt={selectedPhoto.caption || 'Property photo'}
               style={{
                 maxWidth: '100%',

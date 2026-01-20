@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { tenantsAPI } from '../services/api';
 import AddTenantModal from '../components/AddTenantModal';
 import { useToast } from '../components/Toast';
+import { API_URL } from '../config';
 
 function Tenants() {
   const toast = useToast();
@@ -35,7 +36,7 @@ function Tenants() {
   const handleDownloadStatement = async (tenantId, tenantName) => {
     try {
       toast.info('Generating statement...');
-      const response = await fetch(`http://localhost:8000/api/tenants/${tenantId}/statement_pdf/`, {
+      const response = await fetch(`${API_URL}/tenants/${tenantId}/statement_pdf/`, {
         method: 'GET',
         headers: {
           'Accept': 'application/pdf',

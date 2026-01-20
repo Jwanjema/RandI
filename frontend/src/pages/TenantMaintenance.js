@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useToast } from '../components/Toast';
 import axios from 'axios';
+import { API_URL } from '../config';
 
 function TenantMaintenance() {
   const navigate = useNavigate();
@@ -40,7 +41,7 @@ function TenantMaintenance() {
 
   const fetchRequests = async (tenantId) => {
     try {
-      const response = await axios.get(`http://localhost:8000/api/maintenance/?tenant=${tenantId}`, {
+      const response = await axios.get(`${API_URL}/maintenance/?tenant=${tenantId}`, {
         withCredentials: true
       });
       const data = response.data.results || response.data;
@@ -61,7 +62,7 @@ function TenantMaintenance() {
     }
 
     try {
-      await axios.post('http://localhost:8000/api/maintenance/', {
+      await axios.post(`${API_URL}/maintenance/`, {
         tenant: tenantInfo.id,
         unit: tenantInfo.unit_id || tenantInfo.unit,
         title: formData.title,
