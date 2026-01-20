@@ -35,14 +35,8 @@ RUN python manage.py collectstatic --noinput || true
 # Expose port
 EXPOSE 8000
 
-# Create a startup script file
-RUN cat > /start.sh << 'EOF'
-#!/bin/bash
-set -e
-python manage.py migrate --noinput
-python manage.py create_users || true
-exec gunicorn --bind 0.0.0.0:8000 --workers 4 rental_system.wsgi:application
-EOF
+# Create a startup script file (portable, no heredoc support required)
+RUN /bin/sh -c 'printf "%s\n" "#!/bin/sh" "set -e" "python manage.py migrate --noinput" "python manage.py create_users || true" "exec gunicorn --bind 0.0.0.0:8000 --workers 4 rental_system.wsgi:application" > /start.sh'
 
 RUN chmod +x /start.sh
 
