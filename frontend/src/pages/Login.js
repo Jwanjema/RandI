@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useToast } from '../components/Toast';
 import axios from 'axios';
+import { API_URL } from '../config';
 
 function Login() {
   const navigate = useNavigate();
@@ -18,8 +19,7 @@ function Login() {
 
   // Fetch CSRF token on mount
   useEffect(() => {
-    const apiUrl = process.env.REACT_APP_API_URL || 'http://localhost:8000/api';
-    axios.get(`${apiUrl}/auth/csrf/`, {
+    axios.get(`${API_URL}/auth/csrf/`, {
       withCredentials: true
     }).catch(err => console.log('CSRF fetch failed:', err));
   }, []);
@@ -52,7 +52,6 @@ function Login() {
     setLoading(true);
 
     try {
-      const apiUrl = process.env.REACT_APP_API_URL || 'http://localhost:8000/api';
       const endpoint = isSignup ? '/auth/signup/' : '/auth/login/';
       
       // Get CSRF token
@@ -64,7 +63,7 @@ function Login() {
         headers['X-CSRFToken'] = csrfToken;
       }
 
-      const response = await axios.post(`${apiUrl}${endpoint}`, formData, {
+      const response = await axios.post(`${API_URL}${endpoint}`, formData, {
         withCredentials: true,
         headers: headers
       });
