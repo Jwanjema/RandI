@@ -35,20 +35,24 @@ RUN python manage.py collectstatic --noinput || true
 # Expose port
 EXPOSE 8000
 
-# Create startup script
-RUN echo '#!/bin/bash\n\
-    set -e\n\
-    echo "Running migrations..."\n\
-    python manage.py migrate --noinput\n\
-    \n\
-    if [ "${CREATE_DEMO_USERS}" = "true" ]; then\n\
-    echo "Creating demo users..."\n\
-    python manage.py create_users || true\n\
-    fi\n\
-    \n\
-    echo "Starting gunicorn..."\n\
-    exec gunicorn --bind 0.0.0.0:8000 --workers 4 rental_system.wsgi:application\n\
-    ' > /start.sh && chmod +x /start.sh
+# Create a startup script file
+RUN cat > /start.sh << 'EOF'
+#!/bin/bash
+set -e
+
+echo "Running migrations..."
+python manage.py migrate --noinput
+
+if [ "${CREATE_DEMO_USERS}" = "true" ]; then
+  echo "Creating demo users..."
+  python manage.py create_users || true
+fi
+
+echo "Starting gunicorn..."
+exec gunicorn --bind 0.0.0.0:8000 --workers 4 --timeout 120 rental_system.wsgi:application
+EOF
+
+RUN chmod +x /start.sh
 
 # Run startup script
 CMD ["/start.sh"]
