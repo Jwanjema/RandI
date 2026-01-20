@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { photosAPI, buildingsAPI, unitsAPI } from '../services/api';
 import { API_URL } from '../config';
-import { API_URL } from '../config';
 
 function Gallery() {
   const [photos, setPhotos] = useState([]);

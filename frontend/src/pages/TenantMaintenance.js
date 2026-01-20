@@ -7,7 +7,6 @@ import { API_URL } from '../config';
 function TenantMaintenance() {
   const navigate = useNavigate();
   const toast = useToast();
-  const [user, setUser] = useState(null);
   const [tenantInfo, setTenantInfo] = useState(null);
   const [requests, setRequests] = useState([]);
   const [showForm, setShowForm] = useState(false);
@@ -26,9 +25,6 @@ function TenantMaintenance() {
       navigate('/login');
       return;
     }
-
-    const parsedUser = JSON.parse(userData);
-    setUser(parsedUser);
 
     if (tenantData) {
       const parsedTenant = JSON.parse(tenantData);
