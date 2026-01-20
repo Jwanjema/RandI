@@ -23,9 +23,9 @@ def csrf_token_view(request):
     return Response({'detail': 'CSRF cookie set'})
 
 
-@csrf_exempt
 @api_view(['POST'])
 @permission_classes([AllowAny])
+@csrf_exempt
 def login_view(request):
     """
     Login endpoint - returns user info and role
@@ -103,9 +103,9 @@ def login_view(request):
     return Response(response_data)
 
 
-@csrf_exempt
 @api_view(['POST'])
 @permission_classes([AllowAny])
+@csrf_exempt
 def signup_view(request):
     """
     Signup endpoint - create new user account
