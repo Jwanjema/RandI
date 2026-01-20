@@ -14,6 +14,13 @@ python manage.py collectstatic --no-input
 # Run database migrations
 python manage.py migrate
 
+# Optionally create demo users (safe and idempotent)
+# Enable by setting CREATE_DEMO_USERS=true in your environment
+if [ "${CREATE_DEMO_USERS}" = "true" ] || [ "${CREATE_DEMO_USERS}" = "1" ]; then
+	echo "Creating demo users (admin/manager/tenant if possible)..."
+	python manage.py create_users || true
+fi
+
 # Create superuser if it doesn't exist (optional)
 # python manage.py shell << END
 # from django.contrib.auth import get_user_model
