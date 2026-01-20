@@ -74,9 +74,9 @@ WSGI_APPLICATION = 'rental_system.wsgi.application'
 # Database
 # Use SQLite for development (no additional setup required)
 # Use PostgreSQL for production (Render provides DATABASE_URL)
-DATABASE_URL = config('DATABASE_URL', default=None)
+DATABASE_URL = config('DATABASE_URL', default='')
 
-if DATABASE_URL:
+if DATABASE_URL and DATABASE_URL.strip():
     # Production: use PostgreSQL from DATABASE_URL
     DATABASES = {
         'default': dj_database_url.parse(DATABASE_URL, conn_max_age=600)
