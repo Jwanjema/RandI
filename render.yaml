@@ -17,9 +17,9 @@ services:
       - key: ALLOWED_HOSTS
         value: randi-kwbw.onrender.com,.onrender.com
       - key: CORS_ALLOWED_ORIGINS
-        value: https://rental-frontend-ent3.onrender.com
+        value: https://rental-frontend-u8t6.onrender.com
       - key: CSRF_TRUSTED_ORIGINS
-        value: https://randi-kwbw.onrender.com,https://rental-frontend-ent3.onrender.com
+        value: https://randi-kwbw.onrender.com,https://rental-frontend-u8t6.onrender.com
       - key: CREATE_DEMO_USERS
         value: true
     buildFilter:

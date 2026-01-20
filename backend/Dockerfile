@@ -29,11 +29,26 @@ COPY . .
 # Create staticfiles directory
 RUN mkdir -p staticfiles media
 
-# Collect static files
+# Collect static files (skip if it fails - migrations not run yet)
 RUN python manage.py collectstatic --noinput || true
 
 # Expose port
 EXPOSE 8000
 
-# Run gunicorn
-CMD ["gunicorn", "--bind", "0.0.0.0:8000", "--workers", "4", "rental_system.wsgi:application"]
+# Create startup script
+RUN echo '#!/bin/bash\n\
+set -e\n\
+echo "Running migrations..."\n\
+python manage.py migrate --noinput\n\
+\n\
+if [ "${CREATE_DEMO_USERS}" = "true" ]; then\n\
+  echo "Creating demo users..."\n\
+  python manage.py create_users || true\n\
+fi\n\
+\n\
+echo "Starting gunicorn..."\n\
+exec gunicorn --bind 0.0.0.0:8000 --workers 4 rental_system.wsgi:application\n\
+' > /start.sh && chmod +x /start.sh
+
+# Run startup script
+CMD ["/start.sh"]
