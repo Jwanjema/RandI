@@ -157,38 +157,55 @@ SESSION_COOKIE_SECURE = not DEBUG  # True in production with HTTPS
 SESSION_COOKIE_HTTPONLY = True
 
 # CORS settings for React frontend
-CORS_ALLOWED_ORIGINS_DEFAULT = [
+CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",
     "http://127.0.0.1:3000",
     "http://localhost:3001",
     "http://127.0.0.1:3001",
 ]
 
-CORS_ALLOWED_ORIGINS_CONFIG = config('CORS_ALLOWED_ORIGINS', default='')
-if CORS_ALLOWED_ORIGINS_CONFIG:
-    CORS_ALLOWED_ORIGINS = CORS_ALLOWED_ORIGINS_DEFAULT + \
-        [origin.strip()
-         for origin in CORS_ALLOWED_ORIGINS_CONFIG.split(',') if origin.strip()]
-else:
-    CORS_ALLOWED_ORIGINS = CORS_ALLOWED_ORIGINS_DEFAULT
+# Add production frontend URL
+PRODUCTION_FRONTEND = "https://rental-frontend-u8t6.onrender.com"
+if PRODUCTION_FRONTEND not in CORS_ALLOWED_ORIGINS:
+    CORS_ALLOWED_ORIGINS.append(PRODUCTION_FRONTEND)
+
+# Allow environment variable override for flexibility
+CORS_ENV = config('CORS_ALLOWED_ORIGINS', default='')
+if CORS_ENV:
+    for origin in CORS_ENV.split(','):
+        origin = origin.strip()
+        if origin and origin not in CORS_ALLOWED_ORIGINS:
+            CORS_ALLOWED_ORIGINS.append(origin)
 
 CORS_ALLOW_CREDENTIALS = True
+CORS_ALLOW_HEADERS = [
+    'accept',
+    'accept-encoding',
+    'authorization',
+    'content-type',
+    'dnt',
+    'origin',
+    'user-agent',
+    'x-csrftoken',
+    'x-requested-with',
+]
 
 # CSRF trusted origins for cross-origin requests
-CSRF_TRUSTED_ORIGINS_DEFAULT = [
+CSRF_TRUSTED_ORIGINS = [
     "http://localhost:3000",
     "http://127.0.0.1:3000",
     "http://localhost:3001",
     "http://127.0.0.1:3001",
+    PRODUCTION_FRONTEND,
 ]
 
-CSRF_TRUSTED_ORIGINS_CONFIG = config('CSRF_TRUSTED_ORIGINS', default='')
-if CSRF_TRUSTED_ORIGINS_CONFIG:
-    CSRF_TRUSTED_ORIGINS = CSRF_TRUSTED_ORIGINS_DEFAULT + \
-        [origin.strip()
-         for origin in CSRF_TRUSTED_ORIGINS_CONFIG.split(',') if origin.strip()]
-else:
-    CSRF_TRUSTED_ORIGINS = CSRF_TRUSTED_ORIGINS_DEFAULT
+# Allow environment variable override for flexibility
+CSRF_ENV = config('CSRF_TRUSTED_ORIGINS', default='')
+if CSRF_ENV:
+    for origin in CSRF_ENV.split(','):
+        origin = origin.strip()
+        if origin and origin not in CSRF_TRUSTED_ORIGINS:
+            CSRF_TRUSTED_ORIGINS.append(origin)
 
 # CSRF cookie settings
 # None required for cross-site cookies in production
