@@ -151,7 +151,8 @@ REST_FRAMEWORK = {
 }
 
 # Session settings for authentication
-SESSION_COOKIE_SAMESITE = 'None' if not DEBUG else 'Lax'  # None required for cross-site cookies in production
+# None required for cross-site cookies in production
+SESSION_COOKIE_SAMESITE = 'None' if not DEBUG else 'Lax'
 SESSION_COOKIE_SECURE = not DEBUG  # True in production with HTTPS
 SESSION_COOKIE_HTTPONLY = True
 
@@ -190,7 +191,8 @@ else:
     CSRF_TRUSTED_ORIGINS = CSRF_TRUSTED_ORIGINS_DEFAULT
 
 # CSRF cookie settings
-CSRF_COOKIE_SAMESITE = 'None' if not DEBUG else 'Lax'  # None required for cross-site cookies in production
+# None required for cross-site cookies in production
+CSRF_COOKIE_SAMESITE = 'None' if not DEBUG else 'Lax'
 CSRF_COOKIE_SECURE = not DEBUG  # True in production with HTTPS
 CSRF_COOKIE_HTTPONLY = False  # Allow JavaScript to read CSRF token
 

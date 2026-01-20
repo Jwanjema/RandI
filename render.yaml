@@ -1,13 +1,11 @@
 services:
-  # Django Backend Service
+  # Django Backend Service (Docker)
   - type: web
-    name: rental-backend
-    runtime: python
-    buildCommand: './build.sh'
-    startCommand: 'gunicorn rental_system.wsgi:application'
+    name: RandI
+    runtime: docker
+    dockerfilePath: ./backend/Dockerfile
+    dockerContext: ./backend
     envVars:
-      - key: PYTHON_VERSION
-        value: 3.11.9
       - key: DATABASE_URL
         fromDatabase:
           name: rental-db
@@ -17,23 +15,29 @@ services:
       - key: DEBUG
         value: False
       - key: ALLOWED_HOSTS
-        sync: false
-      - key: DJANGO_SETTINGS_MODULE
-        value: rental_system.settings
-      - key: WEB_CONCURRENCY
-        value: 4
+        value: randi-kwbw.onrender.com,.onrender.com
+      - key: CORS_ALLOWED_ORIGINS
+        value: https://rental-frontend-ent3.onrender.com
+      - key: CSRF_TRUSTED_ORIGINS
+        value: https://randi-kwbw.onrender.com,https://rental-frontend-ent3.onrender.com
+      - key: CREATE_DEMO_USERS
+        value: true
+    buildFilter:
+      paths:
+        - backend/**
 
-  # React Frontend Service
+  # React Frontend Service (Docker)
   - type: web
     name: rental-frontend
-    runtime: static
-    buildCommand: cd frontend && npm install && npm run build
-    staticPublishPath: ./frontend/build
+    runtime: docker
+    dockerfilePath: ./frontend/Dockerfile
+    dockerContext: ./frontend
     envVars:
-      - key: NODE_VERSION
-        value: 18.17.0
       - key: REACT_APP_API_URL
-        value: https://rental-backend.onrender.com
+        value: https://randi-kwbw.onrender.com/api
+    buildFilter:
+      paths:
+        - frontend/**
 
 # PostgreSQL Database
 databases:
