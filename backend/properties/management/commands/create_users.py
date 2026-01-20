@@ -23,9 +23,10 @@ class Command(BaseCommand):
                 'is_superuser': True
             }
         )
+        # Always enforce known password so demos stay usable after redeploys
+        admin_user.set_password('admin123')
+        admin_user.save()
         if created:
-            admin_user.set_password('admin123')
-            admin_user.save()
             UserProfile.objects.create(
                 user=admin_user,
                 role='ADMIN',
@@ -34,7 +35,7 @@ class Command(BaseCommand):
             self.stdout.write(self.style.SUCCESS(
                 '✓ Admin user created (username: admin, password: admin123)'))
         else:
-            self.stdout.write('Admin user already exists')
+            self.stdout.write('Admin user already existed; password reset to admin123')
 
         # Create Manager/Caretaker
         manager_user, created = User.objects.get_or_create(
@@ -45,9 +46,9 @@ class Command(BaseCommand):
                 'last_name': 'Manager'
             }
         )
+        manager_user.set_password('manager123')
+        manager_user.save()
         if created:
-            manager_user.set_password('manager123')
-            manager_user.save()
             UserProfile.objects.create(
                 user=manager_user,
                 role='MANAGER',
@@ -56,7 +57,7 @@ class Command(BaseCommand):
             self.stdout.write(self.style.SUCCESS(
                 '✓ Manager user created (username: manager, password: manager123)'))
         else:
-            self.stdout.write('Manager user already exists')
+            self.stdout.write('Manager user already existed; password reset to manager123')
 
         # Create Tenant user - link to first tenant in database
         tenant_record = Tenant.objects.filter(
@@ -70,9 +71,9 @@ class Command(BaseCommand):
                     'last_name': tenant_record.last_name
                 }
             )
+            tenant_user.set_password('tenant123')
+            tenant_user.save()
             if created:
-                tenant_user.set_password('tenant123')
-                tenant_user.save()
                 UserProfile.objects.create(
                     user=tenant_user,
                     role='TENANT',
@@ -82,7 +83,7 @@ class Command(BaseCommand):
                     f'✓ Tenant user created (username: tenant, password: tenant123) - Linked to {tenant_record.full_name}'))
             else:
                 self.stdout.write(
-                    f'Tenant user already exists - Linked to {tenant_record.full_name}')
+                    f'Tenant user already existed; password reset to tenant123 - Linked to {tenant_record.full_name}')
         else:
             self.stdout.write(self.style.WARNING(
                 'No active tenant found to link tenant user'))
